@@ -141,4 +141,33 @@ async function fetchArticleBySlug(category, fullSlug) {
   return article;
 }
 
-export { fetchArticles, fetchArticleBySlug };
+/**
+ * Fetch latest news for sidebar
+ * @param {number} limit - Number of articles to fetch
+ * @returns {Promise<Array>} - Array of latest articles
+ */
+async function fetchLatestNews(limit = 4) {
+  const url = `${SUPABASE_URL}/articles?select=*&order=date_unparsed.desc&limit=${limit}`;
+  
+  const response = await fetch(url, {
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`
+    }
+  });
+  
+  if (!response.ok) {
+    throw new Error('Failed to fetch latest news');
+  }
+  
+  const articles = await response.json();
+  
+  // Add slug to each article
+  articles.forEach(article => {
+    article.slug = generateArticleSlug(article.title, article.post_id);
+  });
+  
+  return articles;
+}
+
+export { fetchArticles, fetchArticleBySlug, fetchLatestNews };
