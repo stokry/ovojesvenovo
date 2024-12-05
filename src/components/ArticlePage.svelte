@@ -94,53 +94,59 @@
   </div>
 {:else if article}
   <div class="container mx-auto px-4 py-8">
-    <div class="max-w-4xl mx-auto">
-      <!-- Breadcrumb -->
-      <div class="flex items-center text-sm text-gray-500 mb-6">
-        <a href="/" class="hover:text-primary">Home</a>
-        <span class="mx-2">/</span>
-        <a href="/{category.toLowerCase()}" class="hover:text-primary">{article.category_name}</a>
-      </div>
-
-      <!-- Article Header -->
-      <header class="mb-8">
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{article.title}</h1>
-        {#if article.subtitle}
-          <p class="text-xl text-gray-600 mb-4">{article.subtitle}</p>
-        {/if}
-        <div class="flex items-center text-sm text-gray-500">
-          <time datetime={article.date_unparsed}>{formatTimeAgo(article.date_unparsed)}</time>
-          <span class="mx-2">•</span>
-          <span>{article.category_name}</span>
+    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-sm overflow-hidden">
+      <div class="px-6 pt-6">
+        <!-- Category and Time -->
+        <div class="flex items-center text-sm mb-4">
+          <a href="/{category.toLowerCase()}" class="text-primary hover:text-secondary font-medium">{article.category_name}</a>
+          <span class="mx-2 text-gray-400">•</span>
+          <time class="text-gray-500">prije {formatTimeAgo(article.date_unparsed)}</time>
         </div>
-      </header>
+
+        <!-- Title -->
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">{article.title}</h1>
+
+        <!-- Summary -->
+        {#if article.summary}
+          <div class="text-lg text-gray-600 mb-6 leading-relaxed">
+            {article.summary}
+          </div>
+        {/if}
+      </div>
 
       <!-- Featured Image -->
       {#if article.image_url}
-        <figure class="mb-8">
+        <div class="mt-4 mb-6">
           <img 
             src={article.image_url} 
             alt={article.title}
-            class="w-full h-auto rounded-lg shadow-lg"
+            class="w-full h-auto"
           >
           {#if article.image_caption}
-            <figcaption class="mt-2 text-sm text-gray-500 text-center">{article.image_caption}</figcaption>
+            <div class="px-6 mt-2">
+              <figcaption class="text-sm text-gray-500 italic">{article.image_caption}</figcaption>
+            </div>
           {/if}
-        </figure>
+        </div>
       {/if}
 
       <!-- Article Content -->
-      <article class="article-content prose prose-lg max-w-none">
-        {@html marked(article.content)}
-      </article>
+      <div class="px-6 pb-6">
+        <div class="article-content prose prose-lg max-w-none">
+          {@html marked(article.content)}
+        </div>
+      </div>
 
-      <div class="mt-8 pt-8 border-t">
-        <a href="/{category.toLowerCase()}" class="inline-flex items-center text-primary hover:text-secondary">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-          </svg>
-          Natrag na {article.category_name}
-        </a>
+      <!-- Back Link -->
+      <div class="px-6 pb-6 border-t border-gray-100">
+        <div class="pt-6">
+          <a href="/{category.toLowerCase()}" class="inline-flex items-center text-primary hover:text-secondary">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+            Natrag na {article.category_name}
+          </a>
+        </div>
       </div>
     </div>
   </div>
