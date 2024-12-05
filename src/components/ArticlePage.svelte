@@ -155,28 +155,21 @@
               {@html marked(article.content)}
             </div>
 
-            <!-- Tags -->
-            {#if article.tags}
-              <div class="mt-8 pt-8 border-t">
-                <div class="flex flex-wrap gap-2">
-                  {#each article.tags.split(',') as tag}
-                    <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm">{tag.trim()}</span>
-                  {/each}
-                </div>
-              </div>
-            {/if}
-
-            <!-- Back Link -->
-            <div class="px-6 pb-6 border-t border-gray-100">
-              <div class="pt-6">
-                <a href="/{category.toLowerCase()}" class="inline-flex items-center text-primary hover:text-secondary">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-                  </svg>
-                  Natrag na {article.category_name}
-                </a>
+           <!-- Keywords -->
+            {#if article.keywords && article.keywords.length > 0}
+            <div class="mt-8 pt-8 border-t">
+              <div class="flex flex-wrap gap-2">
+                {#each article.keywords as keyword}
+                  <a href="/search?q={encodeURIComponent(keyword)}" 
+                    class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm hover:bg-gray-200 transition-colors">
+                    {keyword}
+                  </a>
+                {/each}
               </div>
             </div>
+            {/if}
+
+         
           </div>
         </article>
       </div>
