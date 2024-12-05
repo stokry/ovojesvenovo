@@ -14,6 +14,7 @@
   import ArticlePage from './components/ArticlePage.svelte';
 
   import { fetchArticles } from './lib/api.js';
+  import './styles/article.css';
 
   let featuredArticles = [];
   let categoryArticles = {
