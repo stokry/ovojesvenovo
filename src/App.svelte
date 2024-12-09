@@ -1,3 +1,4 @@
+
 <script>
   import { onMount } from 'svelte';
   import { currentRoute } from './lib/router';
@@ -12,6 +13,7 @@
   import Footer from './components/Footer.svelte';
   import CategoryPage from './components/CategoryPage.svelte';
   import ArticlePage from './components/ArticlePage.svelte';
+  import SEO from './components/SEO.svelte';
 
   import { fetchArticles } from './lib/api.js';
   import './styles/article.css';
@@ -29,6 +31,49 @@
   $: pathParts = path.split('/').filter(Boolean);
   $: currentCategory = pathParts[0];
   $: articleSlug = pathParts[1];
+
+  // SEO data based on current route
+  $: seoData = {
+    title: getSeoTitle(),
+    description: getSeoDescription(),
+    image: getSeoImage(),
+    type: articleSlug ? 'article' : 'website',
+    url: typeof window !== 'undefined' ? window.location.href : '',
+    siteName: 'Your News Portal',
+    twitterHandle: '@yournewsportal'
+  };
+
+  function getSeoTitle() {
+    if (path === '/') {
+      return 'Latest News - Your News Portal';
+    } else if (currentCategory && !articleSlug) {
+      return `${capitalizeFirstLetter(currentCategory)} News - Your News Portal`;
+    } else if (articleSlug) {
+      // The actual article title will be set by ArticlePage component
+      return 'Loading...';
+    }
+    return 'Your News Portal';
+  }
+
+  function getSeoDescription() {
+    if (path === '/') {
+      return 'Stay updated with the latest news, breaking stories, and in-depth coverage across various categories.';
+    } else if (currentCategory && !articleSlug) {
+      return `Latest ${capitalizeFirstLetter(currentCategory)} news and updates - comprehensive coverage and analysis.`;
+    }
+    return 'Your trusted source for the latest news and updates.';
+  }
+
+  function getSeoImage() {
+    if (featuredArticles.length > 0 && path === '/') {
+      return featuredArticles[0].image;
+    }
+    return '/default-og-image.jpg'; // Your default OG image
+  }
+
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
   onMount(async () => {
     try {
@@ -80,6 +125,9 @@
     return date.toLocaleDateString();
   }
 </script>
+
+<!-- Add default SEO that will be overridden by page-specific SEO -->
+<SEO {...seoData} />
 
 <Nav />
 <main class="bg-gray-50">

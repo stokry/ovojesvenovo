@@ -1,8 +1,9 @@
+
 <script>
   import { onMount } from 'svelte';
   import { marked } from 'marked';
   import { fetchArticleBySlug, fetchLatestNews } from '../lib/api.js';
-  import { navigate } from '../lib/router.js';
+  import SEO from './SEO.svelte';
 
   export let category;
   export let slug;
@@ -11,6 +12,19 @@
   let latestNews = [];
   let loading = true;
   let error = null;
+
+  // SEO data preparation
+  $: seoData = article ? {
+    title: article.title,
+    description: article.summary || article.title,
+    keywords: article.keywords?.join(', ') || '',
+    image: article.image_url || '',
+    type: 'article',
+    url: typeof window !== 'undefined' ? window.location.href : '',
+    author: article.author,
+    siteName: 'Your Site Name',
+    twitterHandle: '@yourhandle'
+  } : null;
 
   // Configure marked to only allow specific HTML tags
   const renderer = new marked.Renderer();
@@ -67,6 +81,11 @@
     return date.toLocaleDateString('hr-HR');
   }
 </script>
+
+<!-- Add SEO component -->
+{#if article && seoData}
+  <SEO {...seoData} />
+{/if}
 
 {#if loading}
   <div class="container mx-auto px-4 py-8">
@@ -155,7 +174,7 @@
               {@html marked(article.content)}
             </div>
 
-           <!-- Keywords -->
+            <!-- Keywords -->
             {#if article.keywords && article.keywords.length > 0}
             <div class="mt-8 pt-8 border-t">
               <div class="flex flex-wrap gap-2">
@@ -168,8 +187,6 @@
               </div>
             </div>
             {/if}
-
-         
           </div>
         </article>
       </div>
