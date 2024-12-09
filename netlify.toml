@@ -12,14 +12,14 @@
 
 [[plugins]]
   package = "netlify-plugin-prerender-spa"
-
-[plugins.inputs]
-  paths = [
-    "/",
-    "/svijet",
-    "/lifestyle",
-    "/crna-kronika"
-  ]
+  [plugins.inputs]
+    # The plugin expects 'source' instead of 'paths'
+    source = "dist"
+    # Optional: Minify HTML options
+    [plugins.inputs.minifyHTMLOpts]
+      removeComments = true
+      collapseWhitespace = true
+      removeOptionalTags = true
 
 [[headers]]
   for = "/*"
