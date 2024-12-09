@@ -22,7 +22,7 @@
     type: 'article',
     url: typeof window !== 'undefined' ? window.location.href : '',
     author: article.author,
-    siteName: 'Your Site Name',
+    siteName: 'Brzi.info',
     twitterHandle: '@yourhandle'
   } : null;
 
